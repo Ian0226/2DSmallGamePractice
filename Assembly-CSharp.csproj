@@ -55,13 +55,15 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Door.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
+    <Compile Include="Assets\Scripts\LobbySceneManager.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
     <Compile Include="Assets\Scripts\PlayerDoor.cs" />
     <Compile Include="Assets\Scripts\InteractiveGround.cs" />
     <Compile Include="Assets\Scripts\PlayerContol.cs" />
     <Compile Include="Assets\Scripts\BulletController.cs" />
     <Compile Include="Assets\Scripts\MainGameManager.cs" />
-    <Compile Include="Assets\Scripts\LobbySceneManager.cs" />
+    <Compile Include="Assets\Scripts\GameLoop.cs" />
+    <Compile Include="Assets\Scripts\GameSystem\GameSystemFacade\MainGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

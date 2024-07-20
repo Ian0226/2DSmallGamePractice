@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class PlayerContol : MonoBehaviour
 {
+    /// <summary>
+    /// The player's transform,only get this component here.
+    /// </summary>
+    private Transform _playerTransform;
+
     public float speed;
 
     public Animator Player;
@@ -28,14 +33,19 @@ public class PlayerContol : MonoBehaviour
 
     [SerializeField]
     private GameObject bullet;
+    
+    public void Initialize()
+    {
 
+    }
 
     void Start()
     {
+        _playerTransform = this.transform;
+
         originTransform_y = this.transform.position.y;
         camera_2 = GameObject.Find("Main Camera").GetComponent<Camera>();
         Time.timeScale = 1;
-        
     }
 
     void Update()
@@ -57,16 +67,24 @@ public class PlayerContol : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             Player.SetFloat("speed", 1);
-            rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
+            //New
+            _playerTransform.position = 
+                new Vector2(_playerTransform.position.x - speed * Time.deltaTime, _playerTransform.position.y);
+            //Old
+            //rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
             sr.flipX = true;
             
         }
         else if(Input.GetKey(KeyCode.RightArrow))
         {
             Player.SetFloat("speed", 1);
-            rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y);
+            //New
+            _playerTransform.position =
+                new Vector2(_playerTransform.position.x + speed * Time.deltaTime, _playerTransform.position.y);
+            //Old
+            //rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y);
             sr.flipX = false;
-            
+
         }
         else
         {
