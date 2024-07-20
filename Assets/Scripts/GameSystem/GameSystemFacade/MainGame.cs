@@ -16,18 +16,27 @@ public class MainGame
         Initialize();
     }
 
+    private PlayerContol playerControl = null;
+
     public void Initialize()
     {
         Debug.Log("Game initial start");
+        playerControl = new PlayerContol(this);
     }
     
     public void Update()
     {
-
+        playerControl.Update();
     }
 
     public void Release()
     {
-
+        
     }
+
+    #region methods
+
+
+
+    #endregion
 }

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.CustomTool;
 
-public class PlayerContol : MonoBehaviour
+public class PlayerContol : GameSystemBase
 {
     /// <summary>
     /// The player's transform,only get this component here.
@@ -11,7 +12,7 @@ public class PlayerContol : MonoBehaviour
 
     public float speed;
 
-    public Animator Player;
+    public Animator playerAni;
 
     public Rigidbody2D rb;
 
@@ -29,29 +30,47 @@ public class PlayerContol : MonoBehaviour
 
     public bool isGround = false;
 
-    private Camera camera_2;
+    private Camera _mainCamera;
+    private float cameraOffset = 5;
 
     [SerializeField]
     private GameObject bullet;
-    
-    public void Initialize()
-    {
 
+    public PlayerContol(MainGame main) : base(main)
+    {
+        Initialize();
     }
 
-    void Start()
+    public override void Initialize()
     {
-        _playerTransform = this.transform;
+        _playerTransform = UnityTool.FindGameObject("Player").transform;
+        rb = _playerTransform.GetComponent<Rigidbody2D>();
+        //_mainCamera = UnityTool.FindGameObject("Main Camera").GetComponent<Camera>();
+        coll = _playerTransform.GetComponent<BoxCollider2D>();
+        playerAni = _playerTransform.GetComponent<Animator>();
+        sr = _playerTransform.GetComponent<SpriteRenderer>();
 
-        originTransform_y = this.transform.position.y;
-        camera_2 = GameObject.Find("Main Camera").GetComponent<Camera>();
+        InitParam();
+    }
+
+    /// <summary>
+    /// 參數初始化
+    /// </summary>
+    private void InitParam()
+    {
+        originTransform_y = _playerTransform.transform.position.y;
+
+        speed = 3;
+        jumpForce = 500;
+        ground = LayerMask.NameToLayer("Ground");
+
         Time.timeScale = 1;
     }
 
-    void Update()
+    public override void Update()
     {
-        camera_2.transform.position = this.gameObject.transform.GetChild(0).position;
-        if(coll.IsTouchingLayers(ground))
+        //_mainCamera.transform.position = new Vector2(_playerTransform.position.x, _playerTransform.position.y + cameraOffset);
+        if (coll.IsTouchingLayers(ground))
         {
             isGround = true;
         }
@@ -66,18 +85,18 @@ public class PlayerContol : MonoBehaviour
         */
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Player.SetFloat("speed", 1);
+            playerAni.SetFloat("speed", 1);
             //New
-            _playerTransform.position = 
+            _playerTransform.position =
                 new Vector2(_playerTransform.position.x - speed * Time.deltaTime, _playerTransform.position.y);
             //Old
             //rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
             sr.flipX = true;
-            
+
         }
-        else if(Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow))
         {
-            Player.SetFloat("speed", 1);
+            playerAni.SetFloat("speed", 1);
             //New
             _playerTransform.position =
                 new Vector2(_playerTransform.position.x + speed * Time.deltaTime, _playerTransform.position.y);
@@ -88,21 +107,27 @@ public class PlayerContol : MonoBehaviour
         }
         else
         {
-            Player.SetFloat("speed", 0);
+            playerAni.SetFloat("speed", 0);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
             Debug.Log(isGround);
             rb.AddForce(Vector2.up * jumpForce);
-            Player.SetTrigger("jump");
+            playerAni.SetTrigger("jump");
         }
-        if(Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            Player.SetTrigger("attack");
-            Shoot();
+            playerAni.SetTrigger("attack");
+            //Shoot();//暫時移除
         }
-        Player.SetBool("isGround", isGround);
+        playerAni.SetBool("isGround", isGround);
     }
+
+    public override void Release()
+    {
+        
+    }
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "InteractiveObj")
@@ -139,6 +164,8 @@ public class PlayerContol : MonoBehaviour
         }
         
     }
+    */
+
     /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
