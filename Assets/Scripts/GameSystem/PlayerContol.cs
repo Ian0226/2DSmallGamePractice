@@ -10,6 +10,15 @@ public class PlayerContol : GameSystemBase
     /// </summary>
     private Transform _playerTransform;
 
+    //Specific direction ray hit.
+    private RaycastHit2D hitUpward;
+    private RaycastHit2D hitLeft;
+    private RaycastHit2D hitRight;
+
+    private bool isJump = false;
+
+    private float rayUpDistance;
+
     public float speed;
 
     public Animator playerAni;
@@ -61,14 +70,18 @@ public class PlayerContol : GameSystemBase
         originTransform_y = _playerTransform.transform.position.y;
 
         speed = 3;
-        jumpForce = 500;
+        jumpForce = 100;
         ground = LayerMask.NameToLayer("Ground");
 
         Time.timeScale = 1;
+
+        rayUpDistance = 5;
     }
 
     public override void Update()
     {
+        PlayerRayHandler();
+        //Debug.Log(Physics2D.OverlapBox(_playerTransform.position,coll.size,10));
         //_mainCamera.transform.position = new Vector2(_playerTransform.position.x, _playerTransform.position.y + cameraOffset);
         if (coll.IsTouchingLayers(ground))
         {
@@ -109,27 +122,43 @@ public class PlayerContol : GameSystemBase
         {
             playerAni.SetFloat("speed", 0);
         }
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log(isGround);
+            Debug.Log("Jump");
             rb.AddForce(Vector2.up * jumpForce);
             playerAni.SetTrigger("jump");
+            isJump = true;
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
             playerAni.SetTrigger("attack");
             //Shoot();//暫時移除
         }
-        playerAni.SetBool("isGround", isGround);
+        //playerAni.SetBool("isGround", isGround);
     }
 
     public override void Release()
     {
         
     }
-    /*
+
+    #region 玩家事件
+    private void PlayerRayHandler()
+    {
+        //Upward ray
+        hitUpward = Physics2D.Raycast(_playerTransform.position, Vector2.up, rayUpDistance);
+        if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump == true)
+        {
+            Debug.Log("觸發地圖互動物件");
+
+        }
+    }
+    #endregion
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision);
+        /*
         if (collision.gameObject.tag == "InteractiveObj")
         {
             GameObject obj = GameObject.Find("Door_1");
@@ -146,8 +175,9 @@ public class PlayerContol : GameSystemBase
             GameStart.instance.GameOver();
             Destroy(this.gameObject);
         }
-
+        */
     }
+    /*
     private void Shoot()
     {
         

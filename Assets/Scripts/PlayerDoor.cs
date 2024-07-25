@@ -28,4 +28,10 @@ public class PlayerDoor : MonoBehaviour
                 current = null;
         }
     }
+
+    //For test
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision);
+    }
 }

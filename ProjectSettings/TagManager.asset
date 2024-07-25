@@ -11,6 +11,7 @@ TagManager:
   - Ground_Dead
   - Enemy
   - Bullet
+  - InteractableGround
   layers:
   - Default
   - TransparentFX

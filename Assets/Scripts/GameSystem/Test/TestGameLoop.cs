@@ -8,7 +8,6 @@ public class TestGameLoop : MonoBehaviour
     private void Awake()
     {
         mainGame = MainGame.Instance;
-        mainGame.Initialize();
     }
 
     private void Update()

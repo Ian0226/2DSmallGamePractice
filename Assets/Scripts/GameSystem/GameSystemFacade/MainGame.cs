@@ -16,22 +16,26 @@ public class MainGame
         Initialize();
     }
 
-    private PlayerContol playerControl = null;
+    //Class member
+    private PlayerContol _playerControl = null;
+    private InteractableGroundHandler _interactableObjHandler = null;
 
     public void Initialize()
     {
         Debug.Log("Game initial start");
-        playerControl = new PlayerContol(this);
+        _playerControl = new PlayerContol(this);
+        _interactableObjHandler = new InteractableGroundHandler(this);
     }
     
     public void Update()
     {
-        playerControl.Update();
+        _playerControl.Update();
+        _interactableObjHandler.Update();
     }
 
     public void Release()
     {
-        
+
     }
 
     #region methods
