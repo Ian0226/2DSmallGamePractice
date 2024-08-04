@@ -32,6 +32,10 @@ public class PlayerDoor : MonoBehaviour
     //For test
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision);
+        //Debug.Log(collision.transform.name);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        //Debug.Log(collision.transform.name);
     }
 }

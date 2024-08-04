@@ -2036,6 +2036,7 @@ GameObject:
   - component: {fileID: 794861947}
   - component: {fileID: 794861949}
   - component: {fileID: 794861945}
+  - component: {fileID: 794861948}
   - component: {fileID: 794861946}
   m_Layer: 8
   m_Name: Player
@@ -2162,6 +2163,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &794861948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794861942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cc87b0d56598b84da456d3ff466fcbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &794861949
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4217,7 +4230,7 @@ GameObject:
   - component: {fileID: 1494425677}
   m_Layer: 6
   m_Name: MainGroundTilemap
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

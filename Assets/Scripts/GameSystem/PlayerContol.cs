@@ -15,7 +15,15 @@ public class PlayerContol : GameSystemBase
     private RaycastHit2D hitLeft;
     private RaycastHit2D hitRight;
 
+    
     private bool isJump = false;
+    /// <summary>
+    /// Set is jump state.
+    /// </summary>
+    public bool IsJump
+    {
+        set { isJump = value; }
+    }
 
     private float rayUpDistance;
 
@@ -37,7 +45,8 @@ public class PlayerContol : GameSystemBase
 
     public LayerMask ground;
 
-    public bool isGround = false;
+
+    private bool isGround = false;
 
     private Camera _mainCamera;
     private float cameraOffset = 5;
@@ -48,6 +57,15 @@ public class PlayerContol : GameSystemBase
     public PlayerContol(MainGame main) : base(main)
     {
         Initialize();
+    }
+
+    /// <summary>
+    /// Set player isGround state.
+    /// </summary>
+    /// <param name="state">Is jump or not.</param>
+    public void SetPlayerIsGroundState(bool state)
+    {
+        this.isGround = state;
     }
 
     public override void Initialize()
@@ -83,14 +101,17 @@ public class PlayerContol : GameSystemBase
         PlayerRayHandler();
         //Debug.Log(Physics2D.OverlapBox(_playerTransform.position,coll.size,10));
         //_mainCamera.transform.position = new Vector2(_playerTransform.position.x, _playerTransform.position.y + cameraOffset);
-        if (coll.IsTouchingLayers(ground))
+        //Debug.Log("isGround : " + isGround);
+
+        /*if (coll.IsTouchingLayers(ground))
         {
             isGround = true;
         }
         else
         {
             isGround = false;
-        }
+        }*/
+
         /*float horizontalMove;
         horizontalMove = Input.GetAxis("Horizontal");
         if(horizontalMove!=0)
@@ -122,7 +143,7 @@ public class PlayerContol : GameSystemBase
         {
             playerAni.SetFloat("speed", 0);
         }
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGround)
         {
             Debug.Log("Jump");
             rb.AddForce(Vector2.up * jumpForce);
@@ -143,10 +164,15 @@ public class PlayerContol : GameSystemBase
     }
 
     #region 玩家事件
+    /// <summary>
+    /// Handle ray on above player object
+    /// </summary>
     private void PlayerRayHandler()
     {
         //Upward ray
         hitUpward = Physics2D.Raycast(_playerTransform.position, Vector2.up, rayUpDistance);
+        Debug.DrawRay(_playerTransform.position, Vector2.up * rayUpDistance, Color.green);
+        Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
         if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump == true)
         {
             Debug.Log("觸發地圖互動物件");
@@ -157,7 +183,7 @@ public class PlayerContol : GameSystemBase
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision);
+        //Debug.Log(collision);
         /*
         if (collision.gameObject.tag == "InteractiveObj")
         {

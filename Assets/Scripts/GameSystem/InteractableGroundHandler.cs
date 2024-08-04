@@ -71,5 +71,4 @@ public class InteractableGroundHandler : InteractableObjBase
     {
         currentInsObj = MonoBehaviour.Instantiate(insObj,instantiatePos,Quaternion.identity);
     }
-    
 }

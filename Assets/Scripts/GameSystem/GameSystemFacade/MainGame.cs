@@ -25,6 +25,7 @@ public class MainGame
         Debug.Log("Game initial start");
         _playerControl = new PlayerContol(this);
         _interactableObjHandler = new InteractableGroundHandler(this);
+        
     }
     
     public void Update()
@@ -39,7 +40,22 @@ public class MainGame
     }
 
     #region methods
-
+    /// <summary>
+    /// Get PlayerControl object by this method, don't create new.
+    /// </summary>
+    /// <returns></returns>
+    public PlayerContol GetPlayerControl()
+    {
+        if(_playerControl == null)
+        {
+            Debug.Log("PlayerControl物件尚未建立");
+            return null;
+        }
+        else
+        {
+            return _playerControl;
+        }
+    }
 
 
     #endregion
