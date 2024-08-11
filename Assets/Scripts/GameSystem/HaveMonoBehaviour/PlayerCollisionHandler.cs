@@ -36,19 +36,27 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         if (isEnter)
         {
+            //On collision enter
             switch (collision.transform.tag)
             {
                 case "Ground":
                     player.SetPlayerIsGroundState(true);
                     break;
+                case "InteractableGround":
+
+                    break;
             }
         }
         else 
         {
+            //On collision exit
             switch (collision.transform.tag)
             {
                 case "Ground":
                     player.SetPlayerIsGroundState(false);
+                    break;
+                case "InteractableGround":
+
                     break;
             }
         }

@@ -24,8 +24,11 @@ public class PlayerContol : GameSystemBase
     {
         set { isJump = value; }
     }
-
+    //Ray
     private float rayUpDistance;
+    private float rayUpYOffset;
+
+    private bool interactiveState = false;
 
     public float speed;
 
@@ -66,6 +69,8 @@ public class PlayerContol : GameSystemBase
     public void SetPlayerIsGroundState(bool state)
     {
         this.isGround = state;
+        //暫時把isJump的邏輯寫在這
+        if (isJump) isJump = false;
     }
 
     public override void Initialize()
@@ -94,6 +99,8 @@ public class PlayerContol : GameSystemBase
         Time.timeScale = 1;
 
         rayUpDistance = 5;
+        rayUpYOffset = _playerTransform.position.y + coll.size.y / 2;
+        Debug.Log("rayUpYOffset : " + rayUpYOffset);
     }
 
     public override void Update()
@@ -170,13 +177,14 @@ public class PlayerContol : GameSystemBase
     private void PlayerRayHandler()
     {
         //Upward ray
-        hitUpward = Physics2D.Raycast(_playerTransform.position, Vector2.up, rayUpDistance);
-        Debug.DrawRay(_playerTransform.position, Vector2.up * rayUpDistance, Color.green);
-        Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
-        if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump == true)
+        Vector2 rayPos = new Vector2(_playerTransform.position.x, rayUpYOffset);
+        hitUpward = Physics2D.Raycast(rayPos, Vector2.up, rayUpDistance);
+        Debug.DrawRay(rayPos, Vector2.up * rayUpDistance, Color.green);
+        //Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
+
+        if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump)
         {
             Debug.Log("觸發地圖互動物件");
-
         }
     }
     #endregion
