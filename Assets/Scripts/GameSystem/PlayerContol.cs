@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.CustomTool;
+using System;
+using System.Threading.Tasks;
 
 public class PlayerContol : GameSystemBase
 {
@@ -15,7 +17,9 @@ public class PlayerContol : GameSystemBase
     private RaycastHit2D hitLeft;
     private RaycastHit2D hitRight;
 
-    
+    //Player interactive event
+    private Action playerCurrentInteractiveEvent;
+
     private bool isJump = false;
     /// <summary>
     /// Set is jump state.
@@ -24,6 +28,7 @@ public class PlayerContol : GameSystemBase
     {
         set { isJump = value; }
     }
+
     //Ray
     private float rayUpDistance;
     private float rayUpYOffset;
@@ -170,6 +175,11 @@ public class PlayerContol : GameSystemBase
         
     }
 
+    private void InitActions()
+    {
+        //touchInteractiveGroundEvent = PlayerInteractiveGroundEvent;
+    }
+
     #region 玩家事件
     /// <summary>
     /// Handle ray on above player object
@@ -182,12 +192,27 @@ public class PlayerContol : GameSystemBase
         Debug.DrawRay(rayPos, Vector2.up * rayUpDistance, Color.green);
         //Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
 
-        if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump)
+        if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump &&
+            MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive)
         {
-            Debug.Log("觸發地圖互動物件");
+            GroundInteractableObj interactableObj = 
+                MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
+            interactableObj.InteractiveEvent();
+            interactableObj.CanInteractive = false;
         }
     }
     #endregion
+
+    /// <summary>
+    /// 獲取當前互動到的場景地圖互動物件的Index
+    /// </summary>
+    /// <param name="objName">Now interactive object name</param>
+    /// <returns>The index of object in GroundInteractableObj's list</returns>
+    private int GetNowGroundInteractableObjIndex(string objName)
+    {
+        string[] sArray = objName.Split('_');
+        return Int32.Parse(sArray[sArray.Length-1]);
+    }
     
     private void OnCollisionEnter2D(Collision2D collision)
     {

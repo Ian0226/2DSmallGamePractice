@@ -5,7 +5,8 @@ using Unity.CustomTool;
 using System;
 
 /// <summary>
-/// 地圖中可互動的方塊，玩家站在方塊下方往上跳碰撞此方塊即可觸發互動事件，方塊即會生成特定物件出來，像瑪利歐那樣。
+/// 地圖中可互動的方塊，玩家站在方塊下方往上跳碰撞此方塊即可觸發互動事件，方塊即會生成特定物件出來，像瑪利歐那樣，
+/// 此類別集中管理所有場景上的可互動物件。
 /// </summary>
 public class InteractableGroundHandler : InteractableObjBase
 {
@@ -13,6 +14,11 @@ public class InteractableGroundHandler : InteractableObjBase
     /// 場景中可互動地面物件
     /// </summary>
     private List<Transform> groundTransform = new List<Transform>();
+
+    /// <summary>
+    /// 場景中可互動地面物件的Component
+    /// </summary>
+    private List<GroundInteractableObj> gdInteractObjComponents = new List<GroundInteractableObj>();
 
     /// <summary>
     /// 玩家物件
@@ -51,18 +57,43 @@ public class InteractableGroundHandler : InteractableObjBase
             groundTransform.Add(obj.transform);
         }
         groundTransform.Sort((a, b) => { return a.name.CompareTo(b.name); });
-        
-        foreach (Transform obj in groundTransform)//Test
+
+        //Set GroundInteractableObj component to obj
+        foreach (Transform obj in groundTransform)
         {
-            Debug.Log(obj.name);
+            gdInteractObjComponents.Add(SetObjComponent(obj.gameObject));
+            Debug.Log(obj.name);//Test
         }
+    }
+
+    /// <summary>
+    /// Set ground interactable object component
+    /// </summary>
+    /// <param name="obj">GroundInteractable object</param>
+    private GroundInteractableObj SetObjComponent(GameObject obj)
+    {
+        GroundInteractableObj gdObj = obj.AddComponent<GroundInteractableObj>();
+        gdInteractObjComponents.Add(gdObj);
+        //Init GroundInteractable object param
+        gdObj.CanInteractive = true;
+        return gdObj;
+    }
+
+    /// <summary>
+    /// Get ground interactable object component by index
+    /// </summary>
+    /// <param name="index">Index have to minus 1</param>
+    /// <returns></returns>
+    public GroundInteractableObj GetGroundInteractableObjIndex(int index)
+    {
+        return gdInteractObjComponents[index];
     }
 
     public override void ObjInteractiveEvent()
     {
         HandleIns(instantiateObj);
     }
-
+    
     /// <summary>
     /// 處理生成物件
     /// </summary>

@@ -57,6 +57,16 @@ public class MainGame
         }
     }
 
+    /// <summary>
+    /// Get ground interactable object component by index
+    /// </summary>
+    /// <param name="index">Index have to minus 1</param>
+    /// <returns></returns>
+    public GroundInteractableObj GetGroundInteractableObjIndex(int index)
+    {
+        return _interactableObjHandler.GetGroundInteractableObjIndex(index);
+    }
+
 
     #endregion
 }
