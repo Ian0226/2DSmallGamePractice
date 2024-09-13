@@ -10,11 +10,10 @@ public abstract class InteractableObjBase : GameSystemBase
 {
     public InteractableObjBase(MainGame main) : base(main)
     {
-        objEvent = ObjInteractiveEvent;
+
     }
     
     protected Transform objTransform;
-    protected Action objEvent;
 
     /// <summary>
     /// 物件被互動時要執行的方法

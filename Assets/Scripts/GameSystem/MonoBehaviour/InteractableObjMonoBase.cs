@@ -1,8 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class InteractableObjMonoBase : MonoBehaviour
 {
-    public abstract void InteractiveEvent();
+    protected Action interactiveEvent;
+    public Action InteractiveEvent
+    {
+        get { return interactiveEvent; }
+        set { interactiveEvent = value; }
+    }
 }

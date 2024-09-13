@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - Bullet
   - InteractableGround
+  - Wall
   layers:
   - Default
   - TransparentFX

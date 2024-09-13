@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.CustomTool;
 using System;
+using DG.Tweening;
 
 /// <summary>
 /// 地圖中可互動的方塊，玩家站在方塊下方往上跳碰撞此方塊即可觸發互動事件，方塊即會生成特定物件出來，像瑪利歐那樣，
@@ -21,11 +22,6 @@ public class InteractableGroundHandler : InteractableObjBase
     private List<GroundInteractableObj> gdInteractObjComponents = new List<GroundInteractableObj>();
 
     /// <summary>
-    /// 玩家物件
-    /// </summary>
-    private Transform playerTrans;
-
-    /// <summary>
     /// 儲存每次生成的物件
     /// </summary>
     private GameObject currentInsObj;
@@ -41,9 +37,9 @@ public class InteractableGroundHandler : InteractableObjBase
     private Vector2 instantiatePos;
 
     /// <summary>
-    /// 互動時要執行的事件
+    /// 當前互動到的物件
     /// </summary>
-    public Action interactiveEvent { get { return objEvent; } }
+    private Transform currentInteractiveObj;
 
     public InteractableGroundHandler(MainGame main) : base(main)
     {
@@ -64,18 +60,27 @@ public class InteractableGroundHandler : InteractableObjBase
             gdInteractObjComponents.Add(SetObjComponent(obj.gameObject));
             Debug.Log(obj.name);//Test
         }
+
+        InitParam();
+    }
+
+    private void InitParam()
+    {
+        instantiateObj = (GameObject)Resources.Load("Prefabs/TestDoor");
+        Debug.Log(instantiateObj);
     }
 
     /// <summary>
-    /// Set ground interactable object component
+    /// Set ground interactable object component and do initialize
     /// </summary>
     /// <param name="obj">GroundInteractable object</param>
     private GroundInteractableObj SetObjComponent(GameObject obj)
     {
         GroundInteractableObj gdObj = obj.AddComponent<GroundInteractableObj>();
-        gdInteractObjComponents.Add(gdObj);
+        //gdInteractObjComponents.Add(gdObj);
         //Init GroundInteractable object param
         gdObj.CanInteractive = true;
+        gdObj.InteractiveEvent = ObjInteractiveEvent;
         return gdObj;
     }
 
@@ -86,11 +91,14 @@ public class InteractableGroundHandler : InteractableObjBase
     /// <returns></returns>
     public GroundInteractableObj GetGroundInteractableObjIndex(int index)
     {
+        currentInteractiveObj = gdInteractObjComponents[index].gameObject.transform;
         return gdInteractObjComponents[index];
     }
 
     public override void ObjInteractiveEvent()
     {
+        Debug.Log("執行互動物件事件");
+        instantiatePos = currentInteractiveObj.position;
         HandleIns(instantiateObj);
     }
     
@@ -101,5 +109,10 @@ public class InteractableGroundHandler : InteractableObjBase
     private void HandleIns(GameObject insObj)
     {
         currentInsObj = MonoBehaviour.Instantiate(insObj,instantiatePos,Quaternion.identity);
+        //Animation
+        float endPosY = 1.12f;
+        float duration = 0.5f;
+        currentInsObj.transform.DOMoveY(instantiatePos.y + endPosY, duration).
+            OnComplete(() => { Debug.Log("End Animation"); });
     }
 }

@@ -97,7 +97,7 @@ public class PlayerContol : GameSystemBase
     {
         originTransform_y = _playerTransform.transform.position.y;
 
-        speed = 3;
+        speed = 5;
         jumpForce = 100;
         ground = LayerMask.NameToLayer("Ground");
 
@@ -195,6 +195,10 @@ public class PlayerContol : GameSystemBase
         if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump &&
             MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive)
         {
+            //Test
+            Debug.Log(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
+            Debug.Log(MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1));
+            
             GroundInteractableObj interactableObj = 
                 MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
             interactableObj.InteractiveEvent();
