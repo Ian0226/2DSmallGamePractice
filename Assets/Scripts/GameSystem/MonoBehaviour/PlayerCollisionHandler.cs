@@ -11,13 +11,19 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         player = MainGame.Instance.GetPlayerControl();
     }
-    public Collision2D getCurrentCollObj()
+    public Collision2D GetCurrentCollObj()
     {
-        return currentCollObjs.Peek();
+        if (currentCollObjs.Count > 0)
+        {
+            //Debug.Log(currentCollObjs.Peek().gameObject.name);
+            return currentCollObjs.Peek();
+        }
+        else return null;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         currentCollObjs.Push(collision);
+        Debug.Log(collision.gameObject.name);
         HandleCollisionObjByTag(collision,true);
     }
 
@@ -43,7 +49,11 @@ public class PlayerCollisionHandler : MonoBehaviour
                     player.SetPlayerIsGroundState(true);
                     break;
                 case "InteractableGround":
-
+                    Debug.Log(collision.gameObject.name);
+                    if (player.RayHitGroundInteractiveObj)
+                    {
+                        player.InteractiveGroundFunc();
+                    }
                     break;
             }
         }
@@ -56,7 +66,7 @@ public class PlayerCollisionHandler : MonoBehaviour
                     player.SetPlayerIsGroundState(false);
                     break;
                 case "InteractableGround":
-
+                    Debug.Log(collision.gameObject.name);
                     break;
             }
         }

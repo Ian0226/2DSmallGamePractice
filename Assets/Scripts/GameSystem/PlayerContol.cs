@@ -12,10 +12,20 @@ public class PlayerContol : GameSystemBase
     /// </summary>
     private Transform _playerTransform;
 
+    private PlayerCollisionHandler _playerColHandler;
+
     //Specific direction ray hit.
     private RaycastHit2D hitUpward;
     private RaycastHit2D hitLeft;
     private RaycastHit2D hitRight;
+
+    //Player is touch interactive ground object
+    private bool rayHitGroundInteractiveObj;
+    public bool RayHitGroundInteractiveObj
+    {
+        get { return rayHitGroundInteractiveObj; }
+        set { rayHitGroundInteractiveObj = value; }
+    }
 
     //Player interactive event
     private Action playerCurrentInteractiveEvent;
@@ -104,8 +114,9 @@ public class PlayerContol : GameSystemBase
         Time.timeScale = 1;
 
         rayUpDistance = 5;
-        rayUpYOffset = _playerTransform.position.y + coll.size.y / 2;
-        Debug.Log("rayUpYOffset : " + rayUpYOffset);
+        //Debug.Log("rayUpYOffset : " + rayUpYOffset);
+
+        _playerColHandler = _playerTransform.GetComponent<PlayerCollisionHandler>();
     }
 
     public override void Update()
@@ -187,23 +198,37 @@ public class PlayerContol : GameSystemBase
     private void PlayerRayHandler()
     {
         //Upward ray
+        rayUpYOffset = _playerTransform.position.y + coll.size.y / 2 + 0.5f;
         Vector2 rayPos = new Vector2(_playerTransform.position.x, rayUpYOffset);
         hitUpward = Physics2D.Raycast(rayPos, Vector2.up, rayUpDistance);
         Debug.DrawRay(rayPos, Vector2.up * rayUpDistance, Color.green);
         //Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
-
+        //Handle player interact with ground interactive object.
+        if (isJump)
+        {
+            Debug.Log("isJump : " + isJump);
+            Debug.Log(MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive);
+        }
         if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump &&
             MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive)
         {
+            rayHitGroundInteractiveObj = true;
+            
             //Test
             Debug.Log(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
             Debug.Log(MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1));
-            
-            GroundInteractableObj interactableObj = 
-                MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
-            interactableObj.InteractiveEvent();
-            interactableObj.CanInteractive = false;
         }
+    }
+
+    /// <summary>
+    /// When player collision ground interactive object,call this func.
+    /// </summary>
+    public void InteractiveGroundFunc()
+    {
+        GroundInteractableObj interactableObj =
+                   MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
+        interactableObj.InteractiveEvent();
+        interactableObj.CanInteractive = false;
     }
     #endregion
 
@@ -214,6 +239,7 @@ public class PlayerContol : GameSystemBase
     /// <returns>The index of object in GroundInteractableObj's list</returns>
     private int GetNowGroundInteractableObjIndex(string objName)
     {
+        Debug.Log(objName);
         string[] sArray = objName.Split('_');
         return Int32.Parse(sArray[sArray.Length-1]);
     }
