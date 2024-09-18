@@ -98,7 +98,7 @@ public class InteractableGroundHandler : InteractableObjBase
     public override void ObjInteractiveEvent()
     {
         Debug.Log("執行互動物件事件");
-        instantiatePos = currentInteractiveObj.position;
+        instantiatePos = currentInteractiveObj.GetChild(0).position;//Child 0 is instantiatePosContainer object.
         HandleIns(instantiateObj);
     }
     
@@ -110,8 +110,8 @@ public class InteractableGroundHandler : InteractableObjBase
     {
         currentInsObj = MonoBehaviour.Instantiate(insObj,instantiatePos,Quaternion.identity);
         //Animation
-        float endPosY = 1.12f;
-        float duration = 0.5f;
+        float endPosY = 1.12f;//生成物件的位置 + endPosY = 動畫結束時物件最終位置，暫時只有Y軸
+        float duration = 0.5f;//動畫持續時間
         currentInsObj.transform.DOMoveY(instantiatePos.y + endPosY, duration).
             OnComplete(() => { Debug.Log("End Animation"); });
     }

@@ -49,7 +49,7 @@ public class PlayerCollisionHandler : MonoBehaviour
                     player.SetPlayerIsGroundState(true);
                     break;
                 case "InteractableGround":
-                    Debug.Log(collision.gameObject.name);
+                    Debug.Log("On collision " + collision.gameObject.name);
                     if (player.RayHitGroundInteractiveObj)
                     {
                         player.InteractiveGroundFunc();
@@ -66,7 +66,7 @@ public class PlayerCollisionHandler : MonoBehaviour
                     player.SetPlayerIsGroundState(false);
                     break;
                 case "InteractableGround":
-                    Debug.Log(collision.gameObject.name);
+                    Debug.Log("On collision " + collision.gameObject.name);
                     break;
             }
         }

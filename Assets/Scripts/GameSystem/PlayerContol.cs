@@ -204,11 +204,6 @@ public class PlayerContol : GameSystemBase
         Debug.DrawRay(rayPos, Vector2.up * rayUpDistance, Color.green);
         //Debug.Log("hitUpward : " + hitUpward.transform.gameObject + "hitUpward.transform.tag : " + hitUpward.transform.tag);
         //Handle player interact with ground interactive object.
-        if (isJump)
-        {
-            Debug.Log("isJump : " + isJump);
-            Debug.Log(MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive);
-        }
         if (hitUpward && hitUpward.transform.tag.Equals("InteractableGround") && isJump &&
             MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1).CanInteractive)
         {
@@ -229,6 +224,7 @@ public class PlayerContol : GameSystemBase
                    MainGame.Instance.GetGroundInteractableObjIndex(GetNowGroundInteractableObjIndex(hitUpward.transform.name) - 1);
         interactableObj.InteractiveEvent();
         interactableObj.CanInteractive = false;
+        rayHitGroundInteractiveObj = false;
     }
     #endregion
 
