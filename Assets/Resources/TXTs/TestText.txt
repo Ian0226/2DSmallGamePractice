@@ -1,0 +1,3 @@
+[show]
+GOGOGOGOGO
+[stop]

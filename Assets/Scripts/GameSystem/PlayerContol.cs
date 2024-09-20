@@ -11,6 +11,10 @@ public class PlayerContol : GameSystemBase
     /// The player's transform,only get this component here.
     /// </summary>
     private Transform _playerTransform;
+    public Transform PlayerTransform
+    {
+        get { return _playerTransform; }
+    }
 
     private PlayerCollisionHandler _playerColHandler;
 
@@ -25,6 +29,15 @@ public class PlayerContol : GameSystemBase
     {
         get { return rayHitGroundInteractiveObj; }
         set { rayHitGroundInteractiveObj = value; }
+    }
+
+    /// <summary>
+    /// 玩家當前碰撞到的可互動物件
+    /// </summary>
+    private Transform currentTouchInteractiveObject = null;
+    public Transform CurrentTouchInteractiveObject
+    {
+        get { return currentTouchInteractiveObject; }
     }
 
     //Player interactive event
@@ -67,6 +80,11 @@ public class PlayerContol : GameSystemBase
     private bool isGround = false;
 
     private Camera _mainCamera;
+    public Camera MainCamera
+    {
+        get { return _mainCamera; }
+    }
+
     private float cameraOffset = 5;
 
     [SerializeField]
@@ -92,7 +110,7 @@ public class PlayerContol : GameSystemBase
     {
         _playerTransform = UnityTool.FindGameObject("Player").transform;
         rb = _playerTransform.GetComponent<Rigidbody2D>();
-        //_mainCamera = UnityTool.FindGameObject("Main Camera").GetComponent<Camera>();
+        _mainCamera = UnityTool.FindGameObject("Main Camera").GetComponent<Camera>();
         coll = _playerTransform.GetComponent<BoxCollider2D>();
         playerAni = _playerTransform.GetComponent<Animator>();
         sr = _playerTransform.GetComponent<SpriteRenderer>();
@@ -178,6 +196,11 @@ public class PlayerContol : GameSystemBase
             playerAni.SetTrigger("attack");
             //Shoot();//暫時移除
         }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("互動");
+
+        }
         //playerAni.SetBool("isGround", isGround);
     }
 
@@ -198,7 +221,7 @@ public class PlayerContol : GameSystemBase
     private void PlayerRayHandler()
     {
         //Upward ray
-        rayUpYOffset = _playerTransform.position.y + coll.size.y / 2 + 0.5f;
+        rayUpYOffset = _playerTransform.position.y + 0.6f;
         Vector2 rayPos = new Vector2(_playerTransform.position.x, rayUpYOffset);
         hitUpward = Physics2D.Raycast(rayPos, Vector2.up, rayUpDistance);
         Debug.DrawRay(rayPos, Vector2.up * rayUpDistance, Color.green);

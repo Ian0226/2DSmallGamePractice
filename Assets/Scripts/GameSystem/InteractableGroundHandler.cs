@@ -66,7 +66,7 @@ public class InteractableGroundHandler : InteractableObjBase
 
     private void InitParam()
     {
-        instantiateObj = (GameObject)Resources.Load("Prefabs/TestDoor");
+        instantiateObj = (GameObject)Resources.Load("Prefabs/TestInteraObj");
         Debug.Log(instantiateObj);
     }
 

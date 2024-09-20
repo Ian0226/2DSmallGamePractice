@@ -23,7 +23,6 @@ public class PlayerCollisionHandler : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         currentCollObjs.Push(collision);
-        Debug.Log(collision.gameObject.name);
         HandleCollisionObjByTag(collision,true);
     }
 
@@ -33,11 +32,23 @@ public class PlayerCollisionHandler : MonoBehaviour
         HandleCollisionObjByTag(collision, false);
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Debug.Log("OnTrigger Enter : " + collision);
+        HandleTriggerObjByTag(collision, true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        //Debug.Log("OnTrigger Exit : " + collision);
+        HandleTriggerObjByTag(collision, false);
+    }
+
     /// <summary>
     /// Handle collision
     /// </summary>
     /// <param name="collision">The obj that collisioned</param>
-    /// <param name="isEnter">Collision enter or collision exit</param>
+    /// <param name="isEnter">Collision enter or collision exit,true is enter,otherwise false</param>
     private void HandleCollisionObjByTag(Collision2D collision,bool isEnter)
     {
         if (isEnter)
@@ -70,6 +81,34 @@ public class PlayerCollisionHandler : MonoBehaviour
                     break;
             }
         }
-        
+    }
+
+    /// <summary>
+    /// Handle collision
+    /// </summary>
+    /// <param name="collision">The obj that collisioned</param>
+    /// <param name="isEnter">Collision enter or collision exit,true is enter,otherwise false</param>
+    private void HandleTriggerObjByTag(Collider2D collision, bool isEnter)
+    {
+        if (isEnter)
+        {
+            //On trigger enter
+            switch (collision.transform.tag)
+            {
+                case "CanInteracObj":
+                    Debug.Log("Press E : " + collision.gameObject);
+                    break;
+            }
+        }
+        else
+        {
+            //On trigger exit
+            switch (collision.transform.tag)
+            {
+                case "CanInteracObj":
+                    Debug.Log("Exit : " + collision.gameObject);
+                    break;
+            }
+        }
     }
 }

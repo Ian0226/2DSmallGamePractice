@@ -19,19 +19,28 @@ public class MainGame
     //Class member
     private PlayerContol _playerControl = null;
     private InteractableGroundHandler _interactableObjHandler = null;
+    private SubtitleSystem _subtitleSystem = null;
+
+    //UI
+    private SubtitleUI _subtitleUI = null;
 
     public void Initialize()
     {
         Debug.Log("Game initial start");
         _playerControl = new PlayerContol(this);
         _interactableObjHandler = new InteractableGroundHandler(this);
-        
+        _subtitleSystem = new SubtitleSystem(this);
+
+        //UI
+        _subtitleUI = new SubtitleUI(this);
     }
     
     public void Update()
     {
         _playerControl.Update();
         _interactableObjHandler.Update();
+
+        _subtitleUI.Update();
     }
 
     public void Release()
