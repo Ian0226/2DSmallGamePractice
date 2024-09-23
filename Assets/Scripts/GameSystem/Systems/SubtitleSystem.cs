@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Flower;
+using UnityEngine.UI;
 
+/// <summary>
+/// Control subtitleUI
+/// </summary>
 public class SubtitleSystem : GameSystemBase
 {
     private FlowerSystem _flowerSys = null;
@@ -17,6 +21,5 @@ public class SubtitleSystem : GameSystemBase
         _flowerSys = FlowerManager.Instance.CreateFlowerSystem("FlowerSystem", false);
         _flowerSys.ReadTextFromResource("TXTs/TestText");
         _flowerSys.SetupDialog();
-        //Debug.Log(_flowerSys.SetVariable(""));
     }
 }

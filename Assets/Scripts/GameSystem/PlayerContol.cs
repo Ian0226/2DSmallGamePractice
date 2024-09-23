@@ -200,6 +200,7 @@ public class PlayerContol : GameSystemBase
         {
             Debug.Log("¤¬°Ê");
 
+
         }
         //playerAni.SetBool("isGround", isGround);
     }

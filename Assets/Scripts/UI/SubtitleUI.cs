@@ -7,7 +7,7 @@ using Unity.CustomUITool;
 
 public class SubtitleUI : UserInterface
 {
-    private GameObject textContainerUI = null;
+    //private GameObject textContainerUI = null;
     private Text textComponent;
     public SubtitleUI(MainGame main) : base(main)
     {
@@ -16,18 +16,18 @@ public class SubtitleUI : UserInterface
 
     public override void Initialize()
     {
-        textContainerUI = UnityTool.FindGameObject("DefaultDialogPrefab(Clone)");
-        textContainerUI.GetComponent<Canvas>().worldCamera = Camera.main;
+        rootUI = UnityTool.FindGameObject("DefaultDialogPrefab(Clone)");
+        //textContainerUI = UnityTool.FindGameObject("DefaultDialogPrefab(Clone)");
+        rootUI.GetComponent<Canvas>().worldCamera = Camera.main;
         //textContainerUI.transform.position = mainGame.GetPlayerControl().PlayerTransform.position;
         //textContainerUI.SetActive(false);
-        textComponent = UITool.GetUIComponent<Text>(textContainerUI, "DialogText");
-        //Debug.Log(textComponent.text);
-        //textComponent.text += "OK";
+        textComponent = UITool.GetUIComponent<Text>(rootUI, "DialogText");
+        
+        rootUI.SetActive(false);
     }
 
     public override void Update()
     {
-        textContainerUI.transform.position = mainGame.GetPlayerControl().PlayerTransform.position;
+        rootUI.transform.position = mainGame.GetPlayerControl().PlayerTransform.position;
     }
-
 }

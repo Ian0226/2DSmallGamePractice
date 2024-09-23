@@ -97,6 +97,7 @@ public class PlayerCollisionHandler : MonoBehaviour
             {
                 case "CanInteracObj":
                     Debug.Log("Press E : " + collision.gameObject);
+                    MainGame.Instance.SetHintUIPos(collision.gameObject);
                     break;
             }
         }

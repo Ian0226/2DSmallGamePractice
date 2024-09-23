@@ -20,9 +20,11 @@ public class MainGame
     private PlayerContol _playerControl = null;
     private InteractableGroundHandler _interactableObjHandler = null;
     private SubtitleSystem _subtitleSystem = null;
+    private EventsManager _eventsManager = null;
 
     //UI
     private SubtitleUI _subtitleUI = null;
+    private InteractiveHintUI _interactiveHintUI = null;
 
     public void Initialize()
     {
@@ -30,9 +32,12 @@ public class MainGame
         _playerControl = new PlayerContol(this);
         _interactableObjHandler = new InteractableGroundHandler(this);
         _subtitleSystem = new SubtitleSystem(this);
+        _eventsManager = new EventsManager(this);
 
         //UI
         _subtitleUI = new SubtitleUI(this);
+        _interactiveHintUI = new InteractiveHintUI(this);
+
     }
     
     public void Update()
@@ -74,6 +79,28 @@ public class MainGame
     public GroundInteractableObj GetGroundInteractableObjIndex(int index)
     {
         return _interactableObjHandler.GetGroundInteractableObjIndex(index);
+    }
+
+    /// <summary>
+    /// Show subtile ui
+    /// </summary>
+    public void ShowSubtileUI()
+    {
+        _subtitleUI.Show();
+    }
+
+    /// <summary>
+    /// Hide subtitle ui
+    /// </summary>
+    public void HideSubtileUI()
+    {
+        _subtitleUI.Hide();
+    }
+
+    public void SetHintUIPos(GameObject obj)
+    {
+        if(_interactiveHintUI!=null)
+            _interactiveHintUI.SetHintUIPos(obj);
     }
 
 
